@@ -1,4 +1,4 @@
-# Learning Generalized Visual Odometry Using Position-Aware Optical Flow and Geometric Bundle Adjustment)
+# Learning Generalized Visual Odometry Using Position-Aware Optical Flow and Geometric Bundle Adjustment
 
 Created by [Yijun Cao](https://github.com/cyj5030).
 
