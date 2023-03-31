@@ -1,0 +1,87 @@
+default:
+  # ----------------------------------------------------------------------
+  # training model
+  model: depth # flow, depth, flow-ft
+  device: cuda:2
+  stage: 0
+  # ----------------------------------------------------------------------
+  # path for several dataset
+  dataset: kitti
+  Train_Eval: depth # flow depth, vo, vo-robust
+  kitti_raw: /home/cyj/datasets/KITTI/raw
+  kitti_raw_prepare: /home/cyj/datasets/KITTI/kitti_train
+  kitti_flow_2012: /home/cyj/datasets/KITTI/2012
+  kitti_flow_2015: /home/cyj/datasets/KITTI/2015
+  kitti_odometry: /home/cyj/datasets/KITTI/data_odometry_color
+
+  # ----------------------------------------------------------------------
+  # log 
+  print_iter: 10
+  eval_iter: 1000
+  save_iter: 5000
+  log_path: ./checkpoints
+  log_name: kitti-depth-PWC-Net-v2
+# ----------------------------------------------------------------------
+  # loss weight 
+  w_F_rec: 1.0
+  w_F_smth: 1.0
+
+  w_D_rec: 0.2
+  w_D_cns: 0.5
+  w_D_smth: 1.e-3
+  w_D_ba: 0.5
+  w_F_geo: 0.002
+  w_F_cns: 0.02
+
+  # setting
+  batchsize: 10
+  train_length: 2
+  train_stride: 1
+  use_stero: False # training use stero data
+  depth_scales: 1
+  ba_iter: 30
+  num_keypoints: 3000
+  ratio_keypoints: 0.2
+
+  lr: 1.e-4
+  decay_rate: 0.5
+  decay_step: 20
+  train_epoch: 30
+  width: 832
+  height: 256
+  max_depth: 100
+  min_depth: 0.1
+
+# ----------------------------------------------------------------------
+# Flow 
+flow: 
+  lr: 1.e-4
+  decay_rate: 0.5
+  decay_step: 30
+  train_epoch: 40
+
+  reuse: False
+  reuse_root: ~
+  reuse_part: ~
+
+flow-ft:
+  lr: 1.e-4
+  decay_rate: 0.5
+  decay_step: 20
+  train_epoch: 20
+
+  reuse: True
+  reuse_root: VO
+  reuse_part: all
+
+# ----------------------------------------------------------------------
+# depth
+depth:
+  lr: 1.e-4
+  decay_rate: 0.5
+  decay_step: 20
+  train_epoch: 30
+
+  reuse: True
+  reuse_root: flow-AttFlow #AttFlow
+  reuse_part: flow

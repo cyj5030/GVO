@@ -1,0 +1,96 @@
+default:
+  # ----------------------------------------------------------------------
+  # training model
+  model: 'flow' # flow or depth or vo
+  device: 'cuda:0'
+  # ----------------------------------------------------------------------
+  # path for several dataset
+  dataset: kitti
+  kitti_raw: '/home/cyj/dataset/kitti/raw' 
+  kitti_raw_prepare: '/home/cyj/dataset/kitti/kitti_train'
+  kitti_flow_2012: '/home/cyj/dataset/kitti/2015'
+  kitti_flow_2015: '/home/cyj/dataset/kitti/2012'
+  kitti_odometry: '/home/cyj/dataset/kitti/data_odometry_color'
+
+  # ----------------------------------------------------------------------
+  # log 
+  log_path: './debug'
+  log_name: 'AttFlow'
+
+# ----------------------------------------------------------------------
+# Flow 
+flow: 
+  train_length: 2
+  train_stride: 1
+  lr: 1e-4
+  decay_rate: 0.5
+  decay_step: 10
+  weight: 832
+  height: 256
+
+  train_epoch: 30
+  batchsize: 8
+  print_iter: 10
+  eval_iter: 1000
+  save_iter: 10000
+
+  reuse: False
+  reuse_root: ~
+  reuse_part: ~
+
+# ----------------------------------------------------------------------
+# depth
+depth:
+  train_length: 3
+  train_stride: 1
+  use_stero: False # training use stero data
+  depth_scales: 4
+  ba_iter: 10
+  num_keypoints: 6000
+  ratio_keypoints: 0.2
+
+  lr: 1e-4
+  decay_rate: 0.5
+  decay_step: 20
+  weight: 832
+  height: 256
+  max_depth: 100
+  min_depth: 0.01
+
+  train_epoch: 40
+  batchsize: 6
+  print_iter: 10
+  eval_iter: 1000
+  save_iter: 10000
+
+  reuse: True
+  reuse_root: 'AttFlow'
+  reuse_part: flow
+
+# vo
+vo:
+  train_length: 3
+  train_stride: 1
+  use_stero: False # training use stero data
+  depth_scales: 4
+  ba_iter: 10
+  num_keypoints: 6000
+  ratio_keypoints: 0.2
+
+  lr: 1e-4
+  decay_rate: 0.5
+  decay_step: 20
+  weight: 832
+  height: 256
+  max_depth: 100
+  min_depth: 0.01
+
+  train_epoch: 40
+  batchsize: 6
+  print_iter: 10
+  eval_iter: 1000
+  save_iter: 10000
+
+  reuse: True
+  reuse_root: 'AttFlow'
+  reuse_part: flow
